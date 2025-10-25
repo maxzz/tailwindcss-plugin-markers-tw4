@@ -1,0 +1,56 @@
+{
+    "name": "tailwindcss-plugin-markers-tw4",
+    "version": "1.0.0",
+    "author": "Max Zakharzhevskiy",
+    "license": "MIT",
+    "description": "Tailwind CSS v4 plugin for checkbox markers",
+    "packageManager": "pnpm@10.0.0",
+    "engines": {
+        "node": ">=18.0.0",
+        "pnpm": ">=10.0.0"
+    },
+    "keywords": [
+        "tailwindcss",
+        "tailwindcss-plugin",
+        "tailwind",
+        "overflow",
+        "css"
+    ],
+    "type": "module",
+    "main": "./dist/tw-markers.cjs",
+    "module": "./dist/tw-markers.js",
+    "types": "./dist/tw-markers.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/tw-markers.d.ts",
+                "default": "./dist/tw-markers.js"
+            },
+            "require": {
+                "types": "./dist/tw-markers.d.ts",
+                "default": "./dist/tw-markers.cjs"
+            }
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "peerDependencies": {
+        "tailwindcss": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "tailwindcss": "^4.0.0",
+        "tsup": "^8.3.5",
+        "tsx": "^4.19.2",
+        "typescript": "^5.6.3"
+    },
+    "scripts": {
+        "dev": "tsup --watch",
+        "debug": "tsx test/index.ts",
+        "build": "tsup",
+        "prepublishOnly": "pnpm run build",
+        "publish:npm": "npm publish",
+        "to-npm": "pnpm run publish:npm"
+    }
+}
