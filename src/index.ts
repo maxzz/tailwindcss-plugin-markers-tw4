@@ -3,22 +3,20 @@ import plugin, { type PluginAPI } from 'tailwindcss/plugin';
 import svgToDataUri from 'mini-svg-data-uri';
 
 type Options = {
-    light: string;
-    dark: string;
+    light?: string;
+    dark?: string;
 };
 
-export const fixInputs: ReturnType<typeof plugin.withOptions<Options>> = plugin.withOptions<Options>(
+export const markersPlugin: ReturnType<typeof plugin.withOptions<Options>> = plugin.withOptions<Options>(
     (options = { light: 'black', dark: 'white' }) => (api: PluginAPI) => {
-        markersPlugin(options, api);
+        markersPluginFn(options, api);
     }
 );
 
-export default fixInputs;
+export default markersPlugin;
 
-
-function markersPlugin(options: Options = { light: 'black', dark: 'white' }, api: PluginAPI) {
-    const light = options.light;
-    const dark = options.dark;
+export function markersPluginFn(options: Options = {}, api: PluginAPI) {
+    const { light = 'black', dark = 'white' } = options;
 
     api.addComponents({
         '.form-checkbox:checked': {

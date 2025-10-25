@@ -1,4 +1,4 @@
-import { overflowPlugin } from '../src/index.js';
+import { markersPluginFn } from '../src/index.js';
 import type * as plugin from 'tailwindcss/plugin';
 
 console.log('='.repeat(60));
@@ -16,22 +16,22 @@ const mockPluginAPI: plugin.PluginAPI = {
         console.log('✓ addUtilities called with:', JSON.stringify(newUtilities, null, 2));
     },
     addComponents: (components: Record<string, any>) => {
-        console.log('addComponents called (not used in this plugin)');
+        console.log('✓ addComponents called with:', JSON.stringify(components, null, 2));
     },
     addBase: (base: Record<string, any>) => {
-        console.log('addBase called (not used in this plugin)');
+        console.log('✓ addBase called with:', JSON.stringify(base, null, 2));
     },
     addVariant: (name: string, definition: any) => {
-        console.log('addVariant called (not used in this plugin)');
+        console.log('✓ addVariant called with:', JSON.stringify({ name, definition }, null, 2));
     },
     matchUtilities: (utilities: Record<string, any>, options?: any) => {
-        console.log('matchUtilities called (not used in this plugin)');
+        console.log('✓ matchUtilities called with:', JSON.stringify(utilities, null, 2));
     },
     matchComponents: (components: Record<string, any>, options?: any) => {
-        console.log('matchComponents called (not used in this plugin)');
+        console.log('✓ matchComponents called with:', JSON.stringify(components, null, 2));
     },
     matchVariant: (name: string, definition: any, options?: any) => {
-        console.log('matchVariant called (not used in this plugin)');
+        console.log('✓ matchVariant called with:', JSON.stringify({ name, definition }, null, 2));
     },
     theme: (path: string, defaultValue?: any) => defaultValue,
     config: (path: string, defaultValue?: any) => defaultValue,
@@ -45,7 +45,7 @@ console.log();
 
 try {
     // Execute the plugin function with mocked API
-    overflowPlugin(mockPluginAPI);
+    markersPluginFn({}, mockPluginAPI);
     
     console.log();
     console.log('='.repeat(60));
