@@ -1,5 +1,4 @@
 import plugin, { type PluginAPI } from 'tailwindcss/plugin';
-
 import svgToDataUri from 'mini-svg-data-uri';
 
 type Options = {
@@ -50,7 +49,7 @@ function svgCheckbox(color: string) {
 
 function svgCheckboxIndeterminate(color: string) {
     return `url("${svgToDataUri(
-        `<svg xmlns="http://www.w3.org/2000/svg" fill="${color}" viewBox="0 0 16 16"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h8"/></svg>`
+        `<svg viewBox="0 0 16 16" fill="${color}" xmlns="http://www.w3.org/2000/svg"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h8"/></svg>`
     )}")`;
 }
 

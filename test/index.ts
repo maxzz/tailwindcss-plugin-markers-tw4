@@ -1,14 +1,6 @@
 import { markersPluginFn } from '../src/index.js';
 import type * as plugin from 'tailwindcss/plugin';
 
-console.log('='.repeat(60));
-console.log('Testing Tailwind CSS Overflow Overlay Plugin');
-console.log('='.repeat(60));
-console.log();
-
-// Mock utilities storage
-const utilities: Record<string, any>[] = [];
-
 // Mock PluginAPI
 const mockPluginAPI: plugin.PluginAPI = {
     addUtilities: (newUtilities: Record<string, any>) => {
@@ -40,20 +32,18 @@ const mockPluginAPI: plugin.PluginAPI = {
     prefix: (className: string) => className,
 } as any;
 
-console.log('Running plugin with mocked PluginAPI...');
-console.log();
+// Mock utilities storage
+const utilities: Record<string, any>[] = [];
+
+printTitle('Testing Tailwind CSS Overflow Overlay Plugin\n')
+console.log('Running plugin with mocked PluginAPI...\n');
 
 try {
     // Execute the plugin function with mocked API
     markersPluginFn({}, mockPluginAPI);
     
-    console.log();
-    console.log('='.repeat(60));
-    console.log('Plugin executed successfully!');
-    console.log('='.repeat(60));
-    console.log();
-    console.log(`Total utility groups added: ${utilities.length}`);
-    console.log();
+    printTitle('\nPlugin executed successfully!\n');
+    console.log(`Total utility groups added: ${utilities.length}\n`);
     
     utilities.forEach((utilGroup, index) => {
         console.log(`Utility group ${index + 1}:`);
@@ -69,4 +59,10 @@ try {
     console.error('✗ Error executing plugin:');
     console.error(error);
     process.exit(1);
+}
+
+function printTitle(title: string) {
+    console.log('='.repeat(60));
+    console.log(title);
+    console.log('='.repeat(60));
 }
