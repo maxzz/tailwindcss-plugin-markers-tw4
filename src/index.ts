@@ -1,96 +1,63 @@
-import * as plugin from 'tailwindcss/plugin';
-//import { type PluginAPI } from 'tailwindcss/plugin';
+import plugin, { type PluginAPI } from 'tailwindcss/plugin';
 
-/**
- * Tailwind CSS v4 Plugin for Overflow Overlay Utilities
- * 
- * This plugin adds overflow-overlay utilities to Tailwind CSS.
- * The overflow-overlay value is a legacy scrollbar behavior that can be useful
- * for custom scrollbar implementations.
- */
-export function overflowPlugin({ addUtilities }: plugin.PluginAPI) {
+import svgToDataUri from 'mini-svg-data-uri';
 
-    // 1. Dperecated approach but still works as 'auto'
-    /*
-    Don't use plugin: tailwind cannot have two overlays: auto and overlay at the same time and will break for Firefox. Use index.css instead: 
-        @layer utilities {
-            .overflow-overlay {
-                overflow: auto;
-                overflow: overlay;
-            }
-        }
-        //TODO: Is it still true? It is still true for tailwind 3.2.0.
-    */
-    const overlays = {
-        '.overflow-overlay': {
-            // 'overflow': 'auto', // Js object can't have multiple properties with the same name vs. CSS
-            'overflow': 'overlay',
-        },
-        '.overflow-y-overlay': {
-            // 'overflow-y': 'auto',
-            'overflow-y': 'overlay',
-        },
-        '.overflow-x-overlay': {
-            // 'overflow-x': 'auto',
-            'overflow-x': 'overlay',
-        },
-
-        // "@supports (overflow: overlay)": {
-        //     ".overflow-overlay": {
-        //         'overflow': "overlay",
-        //     },
-        //     '.overflow-y-overlay': {
-        //         'overflow-y': 'overlay',
-        //     },
-        //     '.overflow-x-overlay': {
-        //         'overflow-x': 'overlay',
-        //     },
-        // }
-    };
-    addUtilities(overlays);
-
-    // 2. Custom small scrollbars
-    const smallscroll = {
-        /* Firefox scrollbars */
-        ".smallscroll": {
-            "--sb-width": "8px",
-            "--sb-radius": "4px",
-            "--sb-color": "#666b7a",
-            scrollbarColor: "var(--sb-color) transparent",
-            scrollbarWidth: "thin",
-        },
-
-        /* Chrome scrollbars */
-        ".smallscroll::-webkit-scrollbar": {
-            width: "var(--sb-width)",
-            height: "var(--sb-width)",
-            backgroundColor: "transparent"
-        },
-
-        ".smallscroll::-webkit-scrollbar-thumb": {
-            backgroundColor: "var(--sb-color)",
-            borderRadius: "var(--sb-radius)"
-        },
-
-        ".smallscroll::-webkit-scrollbar-corner": {
-            backgroundColor: "transparent",
-        },
-    };
-    addUtilities(smallscroll); // as alternative //https://github.com/adoxography/tailwind-scrollbar
-
-    // 3. Custom resizer. Additional customizations can be done from the app like: [&::-webkit-resizer]:rounded
-    const resizer = {
-        ".resizer": {
-            "&::-webkit-resizer": {
-                backgroundColor: 'transparent',
-                backgroundImage: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsSAAALEgHS3X78AAAAIGNIUk0AAG11AABzoAAA9q8AAIWZAABumgAA57sAADF9AAAXvQF2CngAAABESURBVHjajM67DQAgDENBw6x0WZDtHi3KR4klF5ausAAVvf8u0TGjgwFlMEUeepR+DCj72CJAC9AkW8OM4QMAAP//AwD5ltVB1vqf0gAAAABJRU5ErkJggg==")',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'bottom right',
-                backgroundSize: '95% 95%',
-            }
-        },
-    };
-    addUtilities(resizer);
+type Options = {
+    light: string;
+    dark: string;
 };
 
-export default overflowPlugin;
+export const fixInputs: ReturnType<typeof plugin.withOptions<Options>> = plugin.withOptions<Options>(
+    (options = { light: 'black', dark: 'white' }) => (api: PluginAPI) => {
+        markersPlugin(options, api);
+    }
+);
+
+export default fixInputs;
+
+
+function markersPlugin(options: Options = { light: 'black', dark: 'white' }, api: PluginAPI) {
+    const light = options.light;
+    const dark = options.dark;
+
+    api.addComponents({
+        '.form-checkbox:checked': {
+            'background-image': svgCheckbox(light),
+        },
+        '.dark .form-checkbox:checked': {
+            'background-image': svgCheckbox(dark),
+        },
+
+        '.form-checkbox:indeterminate': {
+            'background-image': svgCheckboxIndeterminate(light),
+        },
+        '.dark .form-checkbox:indeterminate': {
+            'background-image': svgCheckboxIndeterminate(dark),
+        },
+
+        '.form-radio:checked': {
+            'background-image': svgRadio(light),
+        },
+        '.dark .form-radio:checked': {
+            'background-image': svgRadio(dark),
+        },
+    });
+}
+
+function svgCheckbox(color: string) {
+    return `url("${svgToDataUri(
+        `<svg viewBox="0 0 16 16" fill="${color}" xmlns="http://www.w3.org/2000/svg"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>`
+    )}")`;
+}
+
+function svgCheckboxIndeterminate(color: string) {
+    return `url("${svgToDataUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" fill="${color}" viewBox="0 0 16 16"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h8"/></svg>`
+    )}")`;
+}
+
+function svgRadio(color: string) {
+    return `url("${svgToDataUri(
+        `<svg viewBox="0 0 16 16" fill="${color}" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="3"/></svg>`
+    )}")`;
+}
