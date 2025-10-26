@@ -1,174 +1,259 @@
-# Tailwind CSS v4 Overflow Overlay Plugin
+# Tailwind CSS Plugin: Custom Checkbox & Radio Markers
 
-A Tailwind CSS v4 plugin that adds overflow overlay utilities.
+A Tailwind CSS v4 plugin that adds customizable checkmarks and radio button indicators for form elements with light/dark mode support.
+
+## Features
+
+- ✅ Custom checkbox checkmarks with SVG
+- ✅ Custom checkbox indeterminate state
+- ✅ Custom radio button indicators
+- 🌓 Built-in light/dark mode support
+- 🎨 Fully customizable colors
+- 📦 Lightweight and performant
+- 🔧 TypeScript support
 
 ## Installation
 
 ```bash
-npm install tailwindcss-plugin-overflow-tw4
+npm install tailwindcss-plugin-markers-tw4
 # or
-pnpm add tailwindcss-plugin-overflow-tw4
+pnpm add tailwindcss-plugin-markers-tw4
 # or
-yarn add tailwindcss-plugin-overflow-tw4
-```
-
-## Available Utilities
-
-This plugin provides the following utilities:
-
-#### Overflow Overlay Utilities
-
-- `.overflow-overlay` - Sets `overflow: overlay` with fallback support
-- `.overflow-x-overlay` - Sets `overflow-x: overlay` with fallback support
-- `.overflow-y-overlay` - Sets `overflow-y: overlay` with fallback support
-
-#### Smallscroll Utility
-
-- `.smallscroll` - Adds thin, styled scrollbars for both Firefox and Chrome/WebKit browsers
-  - Customizable via CSS variables:
-    - `--sb-width`: Scrollbar width (default: 8px)
-    - `--sb-radius`: Scrollbar thumb border radius (default: 4px)
-    - `--sb-color`: Scrollbar color (default: #666b7a)
-
-#### Resizer Utility
-
-- `.resizer` - Adds a custom resize handle with a visual grip pattern
-
-## Example
-
-```html
-<!-- Overflow overlay -->
-<div class="overflow-overlay h-64 w-64">
-  <!-- Content with overlay scrollbars -->
-</div>
-
-<!-- Vertical overlay scrollbar -->
-<div class="overflow-y-overlay h-64">
-  <!-- Content with vertical overlay scrollbar -->
-</div>
-
-<!-- Custom thin scrollbars -->
-<div class="smallscroll overflow-auto h-64">
-  <!-- Content with thin, styled scrollbars -->
-</div>
-
-<!-- Custom scrollbar colors -->
-<div class="smallscroll overflow-auto h-64" style="--sb-color: #3b82f6">
-  <!-- Blue scrollbars -->
-</div>
-
-<!-- Textarea with custom resize handle -->
-<textarea class="resizer resize w-full h-32">
-  <!-- Textarea with custom resize grip -->
-</textarea>
+yarn add tailwindcss-plugin-markers-tw4
 ```
 
 ## Usage
 
-### Tailwind CSS v4
+### Basic Setup (Default Colors)
 
-#### Method 1: CSS Import (Recommended for v4)
-
-```css
-/* In your main CSS file (e.g., `app.css` or `index.css`) */
-@import "tailwindcss";
-@plugin "tailwindcss-plugin-overflow-tw4";
-
-/* or connect it to Tailwind CSS js configuration */
-@config '../tailwind.config.js';
-```
-
-```css
-/* or with a relative path if installed locally */
-@import "tailwindcss";
-@plugin "../node_modules/tailwindcss-plugin-overflow-tw4";
-```
-
-#### Method 2: JavaScript Configuration
+Add the plugin to your Tailwind CSS configuration:
 
 ```javascript
-// Add the plugin to your Tailwind CSS v4 configuration:
-// tailwind.config.js or tailwind.config.ts
-import overflowPlugin from 'tailwindcss-plugin-overflow-tw4';
+// tailwind.config.js
+import markersPlugin from 'tailwindcss-plugin-markers-tw4';
 
 export default {
   plugins: [
-    overflowPlugin,
-  ],
-};
+    markersPlugin()
+  ]
+}
 ```
 
-```javascript
-// Or if using ESM in a JavaScript file:
-// tailwind.config.js
-import overflowPlugin from 'tailwindcss-plugin-overflow-tw4';
+This will use the default colors:
+- **Light mode**: Black markers (`#000000`)
+- **Dark mode**: White markers (`#ffffff`)
 
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
-  plugins: [overflowPlugin],
-};
-```
+### Custom Colors
 
-### Tailwind CSS v3
-
-For Tailwind CSS v3, use CommonJS format:
+You can customize the marker colors for both light and dark modes:
 
 ```javascript
 // tailwind.config.js
-const overflowPlugin = require('tailwindcss-plugin-overflow-tw4');
+import markersPlugin from 'tailwindcss-plugin-markers-tw4';
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
-  plugins: [overflowPlugin],
-};
+export default {
+  plugins: [
+    markersPlugin({
+      light: '#3b82f6',  // Blue markers in light mode
+      dark: '#60a5fa'     // Lighter blue in dark mode
+    })
+  ]
+}
 ```
 
-Or with ES modules:
+### HTML Usage
+
+Simply use Tailwind's form classes on your checkbox and radio inputs:
+
+```html
+<!-- Checkbox -->
+<input 
+  type="checkbox" 
+  class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300"
+/>
+
+<!-- Radio Button -->
+<input 
+  type="radio" 
+  class="form-radio h-5 w-5 text-blue-600 border-gray-300"
+/>
+
+<!-- Indeterminate Checkbox (set via JavaScript) -->
+<input 
+  type="checkbox" 
+  id="indeterminate-checkbox"
+  class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300"
+/>
+
+<script>
+  document.getElementById('indeterminate-checkbox').indeterminate = true;
+</script>
+```
+
+## Examples
+
+### Complete Form Example
+
+```html
+<div class="space-y-4 p-6">
+  <!-- Checkbox Example -->
+  <label class="flex items-center space-x-3">
+    <input 
+      type="checkbox" 
+      class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500"
+      checked
+    />
+    <span class="text-gray-900 dark:text-gray-100">Accept terms and conditions</span>
+  </label>
+
+  <!-- Radio Button Example -->
+  <fieldset class="space-y-2">
+    <legend class="text-sm font-medium text-gray-900 dark:text-gray-100">Choose an option:</legend>
+    <label class="flex items-center space-x-3">
+      <input 
+        type="radio" 
+        name="option" 
+        class="form-radio h-4 w-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500"
+        checked
+      />
+      <span class="text-gray-700 dark:text-gray-300">Option 1</span>
+    </label>
+    <label class="flex items-center space-x-3">
+      <input 
+        type="radio" 
+        name="option" 
+        class="form-radio h-4 w-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500"
+      />
+      <span class="text-gray-700 dark:text-gray-300">Option 2</span>
+    </label>
+  </fieldset>
+
+  <!-- Indeterminate Checkbox Example -->
+  <label class="flex items-center space-x-3">
+    <input 
+      type="checkbox" 
+      id="select-all"
+      class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500"
+    />
+    <span class="text-gray-900 dark:text-gray-100">Select all items</span>
+  </label>
+</div>
+```
+
+### Dark Mode Support
+
+The plugin automatically applies different marker colors in dark mode:
+
+```html
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg">
+  <input 
+    type="checkbox" 
+    class="form-checkbox h-5 w-5 text-blue-600 rounded"
+    checked
+  />
+  <!-- In light mode: uses 'light' color option -->
+  <!-- In dark mode: uses 'dark' color option -->
+</div>
+```
+
+## Visual Examples
+
+### Checkboxes
+
+```
+┌─────────────────────────────────────┐
+│  ☐  Unchecked                       │
+│  ☑  Checked (with custom marker)    │
+│  ☒  Indeterminate (with dash)       │
+└─────────────────────────────────────┘
+```
+
+### Radio Buttons
+
+```
+┌─────────────────────────────────────┐
+│  ○  Unselected                      │
+│  ◉  Selected (with custom dot)      │
+└─────────────────────────────────────┘
+```
+
+## Color Options
+
+The plugin accepts any valid CSS color format:
 
 ```javascript
-// tailwind.config.mjs
-import overflowPlugin from 'tailwindcss-plugin-overflow-tw4';
+markersPlugin({
+  light: '#000000',           // Hex
+  dark: 'rgb(255, 255, 255)'  // RGB
+})
 
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
-  plugins: [overflowPlugin],
-};
+markersPlugin({
+  light: 'hsl(220, 90%, 50%)', // HSL
+  dark: '#60a5fa'              // Hex
+})
+
+markersPlugin({
+  light: 'currentColor',       // Named/keyword
+  dark: 'white'                // Named color
+})
 ```
 
-## Development
+## Browser Support
 
-```bash
-# Install dependencies
-pnpm install
+This plugin works in all modern browsers that support:
+- CSS custom properties
+- SVG data URIs
+- Dark mode (`prefers-color-scheme`)
+
+## API Reference
+
+### Plugin Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `light` | `string` | `'black'` | Color for markers in light mode |
+| `dark` | `string` | `'white'` | Color for markers in dark mode |
+
+### Generated Classes
+
+The plugin generates the following CSS for Tailwind's form classes:
+
+- `.form-checkbox:checked` - Checkbox checkmark
+- `.form-checkbox:indeterminate` - Checkbox indeterminate state
+- `.form-radio:checked` - Radio button dot
+- `.dark .form-checkbox:checked` - Checkbox checkmark (dark mode)
+- `.dark .form-checkbox:indeterminate` - Checkbox indeterminate (dark mode)
+- `.dark .form-radio:checked` - Radio button dot (dark mode)
+
+## TypeScript
+
+This plugin includes TypeScript type definitions out of the box.
+
+```typescript
+import markersPlugin from 'tailwindcss-plugin-markers-tw4';
+
+// Type-safe options
+markersPlugin({
+  light: '#3b82f6',
+  dark: '#60a5fa'
+})
 ```
 
-```bash
-# Build the plugin
-pnpm run build
-```
+## Contributing
 
-```bash
-# Debug the plugin
-# Or use VS Code's debugger with the provided launch configuration.
-pnpm run debug
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-```bash
-# Publish the plugin to npm
-pnpm run publish:npm
-```
+## License
 
-## Browser Compatibility
+MIT © Max Zakharzhevskiy
 
-- **Overflow overlay**: Supported in Chromium-based browsers (Chrome, Edge, Opera). Falls back gracefully in other browsers.
-- **Smallscroll**: Works in all modern browsers with optimized styling for both Firefox and WebKit/Blink browsers.
-- **Resizer**: Works in WebKit/Blink browsers (Chrome, Edge, Safari, Opera).
+## Links
 
-## Requirements
+- [GitHub Repository](https://github.com/maxzz/tailwindcss-plugin-markers-tw4)
+- [NPM Package](https://www.npmjs.com/package/tailwindcss-plugin-markers-tw4)
+- [Issue Tracker](https://github.com/maxzz/tailwindcss-plugin-markers-tw4/issues)
 
-- Node.js >= 18.0.0
-- pnpm >= 10.0.0 (for development)
-- Tailwind CSS v3.x or v4.x
+## Related
+
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Tailwind CSS Forms Plugin](https://github.com/tailwindlabs/tailwindcss-forms)

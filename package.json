@@ -1,9 +1,17 @@
 {
     "name": "tailwindcss-plugin-markers-tw4",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Max Zakharzhevskiy",
     "license": "MIT",
     "description": "Tailwind CSS v4 plugin for checkbox markers",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/maxzz/tailwindcss-plugin-markers-tw4.git"
+    },
+    "bugs": {
+        "url": "https://github.com/maxzz/tailwindcss-plugin-markers-tw4/issues"
+    },
+    "homepage": "https://github.com/maxzz/tailwindcss-plugin-markers-tw4",
     "packageManager": "pnpm@10.0.0",
     "engines": {
         "node": ">=18.0.0",
